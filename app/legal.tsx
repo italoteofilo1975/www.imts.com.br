@@ -1,0 +1,3 @@
+import {Footer,PageHero} from "./components";
+export const controller={name:"IMTS PARTICIPAÇÕES S/A",cnpj:"26.126.033/0001-76",address:"Rua Doutor Ernesto Monteiro, nº 1305, A, Sapiranga/Coité, Fortaleza/CE, CEP 60.833-272",privacy:"privacidade@imts.com.br"};
+export function LegalPage({kicker,title,updated,children}:{kicker:string,title:string,updated:string,children:React.ReactNode}){return <main id="conteudo"><PageHero kicker={kicker} title={title} lead={`Versão ${updated}. Transparência, minimização e responsabilidade no ambiente digital IMTS.`}/><section className="content-section legal-copy">{children}</section><Footer/></main>}

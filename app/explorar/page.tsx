@@ -1,0 +1,3 @@
+import {Footer,PageHero,SectionTitle} from "../components";import Explorer from "./Explorer";
+export const metadata={title:"Explore a IMTS | Jornadas e capacidades",description:"Encontre temas, capacidades e caminhos do ecossistema IMTS de acordo com seu papel e contexto."};
+export default function Page(){return <main id="conteudo"><PageHero kicker="Exploração orientada" title="Comece pelo seu papel. Aprofunde pelo contexto." lead="Uma experiência para encontrar capacidades, métodos e portas de entrada sem precisar conhecer previamente a estrutura da IMTS."/><section className="content-section"><SectionTitle kicker="Seu caminho" title="Explore por intenção, papel ou tema"/><Explorer/></section><Footer/></main>}
