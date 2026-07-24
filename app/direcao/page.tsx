@@ -1,0 +1,15 @@
+import Link from "next/link";
+import {Footer,PageHero,SectionTitle} from "../components";
+
+const targets=[
+  {horizon:"2026–2027",title:"Consolidar o sistema",result:"Unificar identidade, método, governança e operação em uma arquitetura mensurável.",measures:["processos críticos com responsável","iniciativas com gate e evidência","experiência digital integrada"]},
+  {horizon:"2027–2030",title:"Escalar transformação",result:"Ampliar soluções replicáveis nos mercados B2G, B2B e B2C com impacto comprovável.",measures:["soluções produtizadas","territórios e organizações atendidos","resultados com baseline e fonte"]},
+  {horizon:"2030+",title:"Construir legado",result:"Converter crescimento em capacidades permanentes para pessoas, organizações e territórios.",measures:["autonomia transferida","conhecimento aberto","impacto intergeracional acompanhado"]},
+];
+const pillars=[
+  ["Pessoas","Desenvolver capacidade, autonomia, liderança e oportunidades de contribuição.","Gente e cultura","/talentos"],
+  ["Impacto","Ligar cada compromisso a iniciativa, indicador, responsável e evidência.","Matriz de impacto","/impacto"],
+  ["Legado","Preservar conhecimento, instituições, prosperidade e condições para o futuro.","Horizontes de legado","/impacto#legado"],
+  ["Inteligência","Usar dados, IA e cenários para decidir melhor sem retirar responsabilidade humana.","Conheça a IARA","/iara"],
+];
+export default function Page(){return <main id="conteudo"><PageHero kicker="Direção 2026–2036" title="Alvos claros. Transformação mensurável. Legado duradouro." lead="A direção estratégica conecta horizontes, resultados, indicadores e decisões. Publicamos a arquitetura do compromisso sem expor informações operacionais confidenciais."/><section className="content-section"><SectionTitle kicker="Alvos estratégicos" title="Três horizontes, uma direção" lead="Cada horizonte desce do propósito ao resultado e do resultado às medidas que permitem governar a execução."/><div className="target-grid">{targets.map(t=><article key={t.horizon}><small>{t.horizon}</small><h3>{t.title}</h3><p>{t.result}</p><details><summary>Como acompanhamos</summary><ul>{t.measures.map(m=><li key={m}>{m}</li>)}</ul></details></article>)}</div></section><section className="content-section black"><SectionTitle light kicker="Arquitetura de valor" title="Estratégia só existe quando chega às pessoas e às decisões." lead="Quatro dimensões transformam direção em prática. Cada uma possui um destino próprio de aprofundamento."/><div className="pillar-grid">{pillars.map(([title,text,label,href])=><article key={title}><h3>{title}</h3><p>{text}</p><Link href={href}>{label} →</Link></article>)}</div></section><section className="content-section"><div className="decision-box"><small>Governança da direção</small><h2>Alvos são revisados por evidência, contexto e responsabilidade.</h2><p>O ciclo combina leitura de cenário, definição de prioridade, portfólio de iniciativas, acompanhamento de indicadores e decisão humana.</p><Link className="button primary" href="/governanca">Aprofundar governança ↗</Link></div></section><Footer/></main>}
