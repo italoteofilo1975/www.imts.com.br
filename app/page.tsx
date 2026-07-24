@@ -34,9 +34,10 @@ export default function Home() {
         <nav>
           <a href="/ecossistema">Ecossistema</a>
           <Link href="/solucoes">Soluções</Link>
-          <a href="/segmentos">Segmentos</a>
+          <a href="/direcao">Direção</a>
+          <a href="/impacto">Impacto</a>
           <a href="/ive">Método IVE</a>
-          <a href="/insights">Insights</a>
+          <a href="/iara">IARA</a>
         </nav>
         <a className="nav-cta" href="/conectar">Conectar <span>↗</span></a>
       </header>
@@ -81,9 +82,9 @@ export default function Home() {
         </div>
         <div className="circle-grid">
           {circles.map(([n, title, text]) => (
-            <article className="circle-card" key={title}>
+            <Link className="circle-card" href={`/ecossistema#circulo-${n}`} key={title}>
               <span>{n}</span><div><h3>{title}</h3><p>{text}</p></div><b>↗</b>
-            </article>
+            </Link>
           ))}
         </div>
         <div className="transversal">
@@ -100,9 +101,9 @@ export default function Home() {
         </div>
         <div className="capability-list">
           {capabilities.map(([tag, title], i) => (
-            <article key={title}>
+            <Link href={`/solucoes#${tag.toLowerCase()}`} key={title}>
               <span>{String(i + 1).padStart(2, "0")}</span><b>{tag}</b><h3>{title}</h3><i>↗</i>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -143,6 +144,16 @@ export default function Home() {
           <p className="eyebrow light"><span /> Impacto e legado</p>
           <h2>Crescer importa.<br /><em>O que o crescimento transforma importa mais.</em></h2>
           <p>Até 2030, o desafio assumido é contribuir com todos os 17 ODS, conectando inovação, prosperidade e responsabilidade.</p>
+          <Link className="text-link" href="/impacto">Conheça a matriz de impacto e legado <span>↗</span></Link>
+        </div>
+      </section>
+
+      <section className="content-section">
+        <div className="pillar-grid legacy-light">
+          <article><h3>Alvos estratégicos</h3><p>Horizontes, resultados e medidas que conectam propósito à execução.</p><Link href="/direcao">Aprofundar direção →</Link></article>
+          <article><h3>Gente e cultura</h3><p>Valores em comportamento, liderança, aprendizagem e evolução por mérito.</p><Link href="/talentos">Conhecer a jornada →</Link></article>
+          <article><h3>Impacto e legado</h3><p>Compromissos ligados a indicadores, evidências e capacidades duradouras.</p><Link href="/impacto">Explorar a matriz →</Link></article>
+          <article><h3>IARA</h3><p>A inteligência da IMTS para compreender, conectar e colocar possibilidades em movimento.</p><Link href="/iara">Conhecer a IARA →</Link></article>
         </div>
       </section>
 
