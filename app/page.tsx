@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const circles = [
   ["01", "Identidade", "Propósito e cultura"],
   ["02", "Estratégias", "Direção e legado"],
@@ -24,14 +26,14 @@ const stages = ["Origem", "Ideação", "Validação", "Prototipação", "Produti
 
 export default function Home() {
   return (
-    <main>
+    <main id="conteudo">
       <header className="nav-shell" aria-label="Navegação principal">
         <a href="#inicio" className="brand" aria-label="IMTS, início">
           <img src="/imts-horizontal-white.png" alt="IMTS" />
         </a>
         <nav>
           <a href="/ecossistema">Ecossistema</a>
-          <a href="/solucoes">Soluções</a>
+          <Link href="/solucoes">Soluções</Link>
           <a href="/segmentos">Segmentos</a>
           <a href="/ive">Método IVE</a>
           <a href="/insights">Insights</a>
@@ -50,7 +52,7 @@ export default function Home() {
           <p className="hero-copy">Conectamos pessoas, tecnologia, método e capital para transformar ideias em soluções reais, escaláveis e sustentáveis.</p>
           <div className="hero-actions">
             <a className="button primary" href="/ecossistema">Conheça o ecossistema <span>↗</span></a>
-            <a className="text-link" href="/solucoes">Explore nossas capacidades <span>↗</span></a>
+            <Link className="text-link" href="/solucoes">Explore nossas capacidades <span>↗</span></Link>
           </div>
         </div>
         <div className="hero-foot">
