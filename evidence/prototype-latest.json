@@ -1,0 +1,123 @@
+{
+  "title": "IMTS Prototype Evidence Lab",
+  "classification": "SIMULATED — NOT PRODUCTION EVIDENCE",
+  "startedAt": "2026-07-28T12:36:49.171Z",
+  "completedAt": "2026-07-28T12:36:49.298Z",
+  "evidenceLevel": "E2",
+  "suite": {
+    "status": "passed",
+    "output": [
+      "ℹ tests 7",
+      "ℹ suites 0",
+      "ℹ pass 7",
+      "ℹ fail 0",
+      "ℹ cancelled 0",
+      "ℹ skipped 0",
+      "ℹ todo 0",
+      "ℹ duration_ms 74.285081"
+    ]
+  },
+  "journeys": [
+    {
+      "persona": "solution",
+      "correlationId": "2e47f5e7-8f2d-467c-837f-5af54d6aa231",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    },
+    {
+      "persona": "relations",
+      "correlationId": "75c1e203-b24e-4492-beb2-3192c06c5dfd",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    },
+    {
+      "persona": "initiative",
+      "correlationId": "a9db8526-5d27-468a-bfde-2575034acdb9",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    },
+    {
+      "persona": "technology",
+      "correlationId": "deb07d7e-d734-49ba-96cb-c11ac8519744",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    },
+    {
+      "persona": "partnership",
+      "correlationId": "c8d18c0f-096c-477f-be3c-f9ddb8d57d5a",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    },
+    {
+      "persona": "talent",
+      "correlationId": "2baea54e-2641-40f8-9554-0a900ac00c07",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    },
+    {
+      "persona": "capital",
+      "correlationId": "5b3112fa-f6ac-4894-9fe7-48539c9579d5",
+      "steps": [
+        "page_view",
+        "cta_click",
+        "form_start",
+        "form_submit",
+        "accepted_pending_delivery"
+      ],
+      "pii": "synthetic-only",
+      "evidenceLevel": "E2"
+    }
+  ],
+  "productionGatesStillRequired": [
+    "OIDC/JWT and MFA active in the production identity provider",
+    "distributed rate limiting against the real multi-instance topology",
+    "provider backup restore with approved RPO/RTO",
+    "Resend delivery, SPF, DKIM and DMARC",
+    "public DNS, TLS, HSTS and canonical redirects",
+    "manual NVDA, VoiceOver and real-device accessibility evidence",
+    "DPO/legal approval and real data-subject process",
+    "live alerts received by named operational responders"
+  ]
+}
