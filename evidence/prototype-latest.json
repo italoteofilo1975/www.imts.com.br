@@ -1,8 +1,8 @@
 {
   "title": "IMTS Prototype Evidence Lab",
   "classification": "SIMULATED — NOT PRODUCTION EVIDENCE",
-  "startedAt": "2026-07-28T12:36:49.171Z",
-  "completedAt": "2026-07-28T12:36:49.298Z",
+  "startedAt": "2026-07-28T14:40:40.952Z",
+  "completedAt": "2026-07-28T14:40:41.127Z",
   "evidenceLevel": "E2",
   "suite": {
     "status": "passed",
@@ -14,13 +14,13 @@
       "ℹ cancelled 0",
       "ℹ skipped 0",
       "ℹ todo 0",
-      "ℹ duration_ms 74.285081"
+      "ℹ duration_ms 99.829763"
     ]
   },
   "journeys": [
     {
       "persona": "solution",
-      "correlationId": "2e47f5e7-8f2d-467c-837f-5af54d6aa231",
+      "correlationId": "84db7fe4-482c-40d5-b4b2-32234ebaaf6d",
       "steps": [
         "page_view",
         "cta_click",
@@ -33,7 +33,7 @@
     },
     {
       "persona": "relations",
-      "correlationId": "75c1e203-b24e-4492-beb2-3192c06c5dfd",
+      "correlationId": "31adb9d7-0833-4154-b2c2-b0c14a63f531",
       "steps": [
         "page_view",
         "cta_click",
@@ -46,7 +46,7 @@
     },
     {
       "persona": "initiative",
-      "correlationId": "a9db8526-5d27-468a-bfde-2575034acdb9",
+      "correlationId": "6f1724e3-99b5-4c6d-b06e-90ca8adec316",
       "steps": [
         "page_view",
         "cta_click",
@@ -59,7 +59,7 @@
     },
     {
       "persona": "technology",
-      "correlationId": "deb07d7e-d734-49ba-96cb-c11ac8519744",
+      "correlationId": "e496d05f-12ab-4972-b795-548f2c8bc623",
       "steps": [
         "page_view",
         "cta_click",
@@ -72,7 +72,7 @@
     },
     {
       "persona": "partnership",
-      "correlationId": "c8d18c0f-096c-477f-be3c-f9ddb8d57d5a",
+      "correlationId": "d8d74180-1848-477d-8659-cfbf4583cae3",
       "steps": [
         "page_view",
         "cta_click",
@@ -85,7 +85,7 @@
     },
     {
       "persona": "talent",
-      "correlationId": "2baea54e-2641-40f8-9554-0a900ac00c07",
+      "correlationId": "9e060521-6b6e-440a-a7ac-8145dd1692e0",
       "steps": [
         "page_view",
         "cta_click",
@@ -98,7 +98,7 @@
     },
     {
       "persona": "capital",
-      "correlationId": "5b3112fa-f6ac-4894-9fe7-48539c9579d5",
+      "correlationId": "4177945d-f0ff-4945-9b6b-78981ad67956",
       "steps": [
         "page_view",
         "cta_click",
@@ -108,6 +108,82 @@
       ],
       "pii": "synthetic-only",
       "evidenceLevel": "E2"
+    }
+  ],
+  "load": [
+    {
+      "size": 100,
+      "workers": 4,
+      "processed": 100,
+      "duplicates": 0,
+      "loss": 0,
+      "durationMs": 34.875586,
+      "p50Ms": 0.5446709999999939,
+      "p95Ms": 4.950507000000016,
+      "p99Ms": 7.026494000000014,
+      "auditEvents": 200
+    },
+    {
+      "size": 500,
+      "workers": 16,
+      "processed": 500,
+      "duplicates": 0,
+      "loss": 0,
+      "durationMs": 39.44411900000003,
+      "p50Ms": 0.5466539999999895,
+      "p95Ms": 4.866160999999977,
+      "p99Ms": 6.875058999999965,
+      "auditEvents": 1000
+    },
+    {
+      "size": 1000,
+      "workers": 32,
+      "processed": 1000,
+      "duplicates": 0,
+      "loss": 0,
+      "durationMs": 37.88340999999997,
+      "p50Ms": 0.2513539999999921,
+      "p95Ms": 0.9781020000000353,
+      "p99Ms": 6.61029400000001,
+      "auditEvents": 2000
+    }
+  ],
+  "restore": [
+    {
+      "size": 100,
+      "rtoMs": 6.937840999999992,
+      "rpoRecords": 0,
+      "integrity": true,
+      "orphans": 0,
+      "manifest": {
+        "cutoff": 100,
+        "rowCount": 100,
+        "sha256": "9170f993f86398183dc78a13372b5e512e4bca2eefce550dbf37425087e9f3cc"
+      }
+    },
+    {
+      "size": 500,
+      "rtoMs": 2.738337999999999,
+      "rpoRecords": 0,
+      "integrity": true,
+      "orphans": 0,
+      "manifest": {
+        "cutoff": 500,
+        "rowCount": 500,
+        "sha256": "2b8005393ca71d770d82f5b58aa40f607d801a7ae5bcb13a01230736921e4e56"
+      }
+    },
+    {
+      "size": 1000,
+      "rtoMs": 4.025063999999986,
+      "rpoRecords": 0,
+      "integrity": true,
+      "orphans": 0,
+      "manifest": {
+        "cutoff": 1000,
+        "rowCount": 1000,
+        "sha256": "01a37982fda53c86b21beb9652535e981fac64c867a851111ba64b17a17c9033"
+      }
     }
   ],
   "productionGatesStillRequired": [
