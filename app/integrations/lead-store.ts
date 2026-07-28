@@ -27,6 +27,7 @@ async function ensureSchema(db:D1Database){
     db.prepare("CREATE TABLE IF NOT EXISTS lead_events (id INTEGER PRIMARY KEY AUTOINCREMENT, lead_id TEXT NOT NULL, event TEXT NOT NULL, channel TEXT, detail TEXT, created_at TEXT NOT NULL)"),
     db.prepare("CREATE TABLE IF NOT EXISTS operation_token_jti (jti TEXT PRIMARY KEY, subject TEXT NOT NULL, expires_at TEXT NOT NULL, consumed_at TEXT NOT NULL)"),
     db.prepare("CREATE TABLE IF NOT EXISTS connector_circuit (connector TEXT PRIMARY KEY, state TEXT NOT NULL DEFAULT 'closed', failures INTEGER NOT NULL DEFAULT 0, opened_at TEXT, probe_lease TEXT, updated_at TEXT NOT NULL)"),
+    db.prepare("CREATE TABLE IF NOT EXISTS rate_limit_windows (route TEXT NOT NULL, subject_hash TEXT NOT NULL, window_start TEXT NOT NULL, count INTEGER NOT NULL DEFAULT 0, updated_at TEXT NOT NULL, PRIMARY KEY(route,subject_hash,window_start))"),
     db.prepare("CREATE TABLE IF NOT EXISTS prototype_audit_events (id INTEGER PRIMARY KEY AUTOINCREMENT, correlation_id TEXT NOT NULL, actor TEXT NOT NULL, action TEXT NOT NULL, resource TEXT NOT NULL, outcome TEXT NOT NULL, previous_hash TEXT NOT NULL, event_hash TEXT NOT NULL UNIQUE, created_at TEXT NOT NULL)"),
     db.prepare("CREATE INDEX IF NOT EXISTS leads_delivery_status_idx ON leads(delivery_status, created_at)"),
     db.prepare("CREATE INDEX IF NOT EXISTS lead_events_lead_id_idx ON lead_events(lead_id, created_at)"),
