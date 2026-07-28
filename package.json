@@ -39,7 +39,7 @@
     "vite": "8.0.13",
     "wrangler": "4.92.0"
   },
-  "overrides": {"postcss":"8.5.14","sharp":"0.35.0"},
+  "overrides": {"postcss":"8.5.18","sharp":"0.35.0"},
   "type": "module",
   "displayName": "IMTS | Ecossistema de Transforma\u00e7\u00e3o"
 }
