@@ -18,6 +18,13 @@ Public queries may access only approved institutional knowledge. Authenticated q
 ## Analytics connector
 Accept only the allowlisted event catalog. Do not activate before measurement consent. Never transmit message contents, e-mail addresses, client names, secrets or confidential strategy as event properties.
 
+The first-party gateway persists the allowlisted event before forwarding it. Event properties are restricted to 12 short string values and must remain non-identifying. Configure `IMTS_ANALYTICS_ENDPOINT` and `IMTS_ANALYTICS_SITE_ID` only when the external processor and consent basis are approved.
+
+## Pending lead retry
+Set `IMTS_OPERATIONS_SECRET`, `IMTS_LEAD_WEBHOOK_URL` and `IMTS_LEAD_WEBHOOK_SECRET`. Invoke `POST /api/operations/retry-leads` with `Authorization: Bearer <IMTS_OPERATIONS_SECRET>` from an approved hourly scheduler. The worker selects at most 25 pending records, preserves the original idempotency key and stops after five attempts. Never call this route from a browser or expose its secret in client code.
+
+Operational evidence for each run is the returned aggregate (`processed`, `delivered`, `pending`) plus the corresponding `lead_events` records. Alert the technical owner when pending records remain after five attempts.
+
 ## Incident levels
 - P1: exposure risk, authentication bypass or integrity failure — disable connector immediately.
 - P2: lead loss, duplicated processing or sustained IMTS.OS outage — switch to fallback and investigate.
