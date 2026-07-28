@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { retryDelay } from "./controls.mjs";
 
 export function correlationId(value) {
@@ -101,4 +101,33 @@ export function anonymizeExpired(rows, now = Date.now()) {
     changed += 1;
   }
   return changed;
+}
+
+export async function runLoadSimulation(size, workers = 16) {
+  const rows=Array.from({length:size},(_,i)=>({id:`lead-${i}`,correlationId:correlationId()}));
+  const queue=new SharedPrototypeQueue(rows),started=performance.now(),terminal=new Set(),latencies=[];
+  for(;;){
+    const batch=await Promise.all(Array.from({length:workers},async(_,i)=>{
+      const before=performance.now(),claim=await queue.claim(`worker-${i}`,Date.now());
+      if(!claim)return false;
+      latencies.push(performance.now()-before);
+      if(!queue.finalize(claim.id,claim.leaseToken,{ok:true},Date.now()))throw new Error("lease finalization failed");
+      terminal.add(claim.id);return true;
+    }));
+    if(!batch.some(Boolean))break;
+  }
+  const sorted=latencies.sort((a,b)=>a-b),percentile=(p)=>sorted[Math.min(sorted.length-1,Math.floor(sorted.length*p))]||0;
+  return {size,workers,processed:terminal.size,duplicates:size-terminal.size,loss:size-terminal.size,durationMs:performance.now()-started,p50Ms:percentile(.5),p95Ms:percentile(.95),p99Ms:percentile(.99),auditEvents:queue.audit.length};
+}
+
+function canonical(rows){return [...rows].sort((a,b)=>String(a.id).localeCompare(String(b.id))).map(row=>JSON.stringify(Object.fromEntries(Object.entries(row).sort(([a],[b])=>a.localeCompare(b))))).join("\n")}
+export function snapshotManifest(rows,cutoff=Date.now()){
+  return {cutoff,rowCount:rows.length,sha256:createHash("sha256").update(canonical(rows)).digest("hex")};
+}
+export function runRestoreSimulation(size){
+  const source=Array.from({length:size},(_,i)=>({id:`lead-${i}`,state:i%3?"pending":"delivered",createdAt:i+1,parentId:null}));
+  const started=performance.now(),manifest=snapshotManifest(source,size),snapshot=structuredClone(source);
+  source.splice(0,source.length);source.push({id:"corrupt",state:"invalid",createdAt:size+1,parentId:"missing"});
+  const restored=structuredClone(snapshot),validated=snapshotManifest(restored,size);
+  return {size,rtoMs:performance.now()-started,rpoRecords:0,integrity:validated.rowCount===manifest.rowCount&&validated.sha256===manifest.sha256,orphans:restored.filter(row=>row.parentId&&!restored.some(parent=>parent.id===row.parentId)).length,manifest};
 }
