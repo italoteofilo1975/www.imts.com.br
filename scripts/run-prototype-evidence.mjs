@@ -2,6 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { syntheticJourney } from "../app/prototype/controls.mjs";
+import {runLoadSimulation,runRestoreSimulation} from "../app/prototype/operational-flow.mjs";
 
 const exec = promisify(execFile);
 const startedAt = new Date().toISOString();
@@ -22,6 +23,8 @@ const report = {
   evidenceLevel: "E2",
   suite: testResult,
   journeys: personas.map((persona) => syntheticJourney(persona)),
+  load:await Promise.all([[100,4],[500,16],[1000,32]].map(([size,workers])=>runLoadSimulation(size,workers))),
+  restore:[100,500,1000].map(runRestoreSimulation),
   productionGatesStillRequired: [
     "OIDC/JWT and MFA active in the production identity provider",
     "distributed rate limiting against the real multi-instance topology",
