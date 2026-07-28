@@ -14,3 +14,10 @@ export const leadEvents=sqliteTable("lead_events",{
   id:integer("id").primaryKey({autoIncrement:true}),leadId:text("lead_id").notNull(),
   event:text("event").notNull(),channel:text("channel"),detail:text("detail"),createdAt:text("created_at").notNull(),
 });
+
+export const siteEvents=sqliteTable("site_events",{
+  id:integer("id").primaryKey({autoIncrement:true}),
+  event:text("event").notNull(),path:text("path").notNull().default(""),
+  properties:text("properties").notNull().default("{}"),
+  createdAt:text("created_at").notNull(),
+});
