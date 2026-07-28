@@ -16,7 +16,7 @@ async function ensureSchema(db:D1Database){
 }
 
 export async function persistLead(lead:StoredLead){
-  const db=await database();if(!db)return false;await ensureSchema(db);
+  const db=await database();if(!db)throw new Error("durable lead storage unavailable");await ensureSchema(db);
   await db.batch([
     db.prepare("INSERT INTO leads (id,intent,name,email,organization,role,message,destination,consent_version,delivery_status,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,'accepted',?,?)").bind(lead.id,lead.intent,lead.name,lead.email,lead.organization,lead.role,lead.message,lead.destination,lead.privacy.consentVersion,lead.createdAt,lead.createdAt),
     db.prepare("INSERT INTO lead_events (lead_id,event,detail,created_at) VALUES (?,'accepted','durable intake',?)").bind(lead.id,lead.createdAt),
