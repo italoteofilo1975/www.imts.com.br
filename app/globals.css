@@ -74,3 +74,6 @@ html.overlay-open,html.consent-open{overflow:hidden}
 @media(max-width:1050px){.criteria-cards,.instrument-grid{grid-template-columns:repeat(2,1fr)}.depth-stack article{grid-template-columns:55px 1fr}.depth-stack article>p,.depth-stack article>b,.depth-stack article>i{grid-column:2}.depth-stack details{grid-column:2}}
 @media(max-width:700px){.criteria-cards,.instrument-grid{grid-template-columns:1fr}.depth-stack details ul{grid-template-columns:1fr}}
 .ai-panel{max-height:calc(100dvh - 120px);overflow:auto}
+.consent-panel{max-height:calc(100dvh - 32px);overflow:auto}
+@media(max-width:1050px){.privacy-trigger{bottom:72px}.site-header,.nav-shell{padding-right:190px}}
+@media(max-width:700px){.site-header,.nav-shell{padding-right:150px}.header-cta,.nav-cta{display:none}.menu-toggle{right:16px}.privacy-trigger{bottom:70px}}
