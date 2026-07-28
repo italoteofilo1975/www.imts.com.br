@@ -25,6 +25,12 @@ export const connectorCircuit=sqliteTable("connector_circuit",{
   probeLease:text("probe_lease"),updatedAt:text("updated_at").notNull(),
 });
 
+export const rateLimitWindows=sqliteTable("rate_limit_windows",{
+  route:text("route").notNull(),subjectHash:text("subject_hash").notNull(),
+  windowStart:text("window_start").notNull(),count:integer("count").notNull().default(0),
+  updatedAt:text("updated_at").notNull(),
+});
+
 export const prototypeAuditEvents=sqliteTable("prototype_audit_events",{
   id:integer("id").primaryKey({autoIncrement:true}),correlationId:text("correlation_id").notNull(),
   actor:text("actor").notNull(),action:text("action").notNull(),resource:text("resource").notNull(),

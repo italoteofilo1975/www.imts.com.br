@@ -1,5 +1,6 @@
 import {authorizeOperation} from "@/app/integrations/operations-auth";
 import {database,deliver} from "@/app/integrations/lead-store";
+import {sharedRateLimit,circuitPermission,recordCircuit} from "@/app/integrations/runtime-controls";
 import type {PendingLead} from "@/app/integrations/types";
 
 async function hash(value:string){const bytes=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(value));return Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,"0")).join("")}
@@ -26,12 +27,17 @@ export async function POST(request:Request){
   const db=await database();if(!db)return Response.json({ok:false,code:"database_unavailable"},{status:503});
   const identity=await authorizeOperation(request,db,"leads:retry");
   if(!identity)return Response.json({ok:false,code:"unauthorized"},{status:401,headers:{"www-authenticate":"Bearer"}});
+  const rate=await sharedRateLimit(request,"operations.retry",30,60);
+  if(!rate.allowed)return Response.json({ok:false,code:"rate_limited"},{status:429,headers:{"retry-after":String(rate.retryAfter)}});
   const worker=`${identity.subject}:${crypto.randomUUID()}`,max=Math.min(25,Math.max(1,Number(new URL(request.url).searchParams.get("limit")||25)));
   let delivered=0,pending=0,dead=0,processed=0;
   for(let i=0;i<max;i++){
     const lead=await claim(db,worker);if(!lead)break;processed++;
     await audit(db,identity,lead.correlation_id||crypto.randomUUID(),"lead.claimed",`lead:${lead.id}`,"allowed");
-    const outcome=await deliver(lead),now=new Date().toISOString();
+    const circuit=await circuitPermission("lead_webhook");
+    const outcome=circuit.allowed?await deliver(lead):{ok:false,status:503,detail:"circuit open",retryAfter:"60"};
+    if(circuit.allowed)await recordCircuit("lead_webhook",outcome.ok,circuit.probe);
+    const now=new Date().toISOString();
     const permanent=outcome.status>=400&&outcome.status<500&&outcome.status!==408&&outcome.status!==429;
     const exhausted=lead.delivery_attempts>=5,state=outcome.ok?"delivered":permanent||exhausted?"dead":"pending";
     const next=state==="pending"?retryAt(lead.delivery_attempts,outcome.retryAfter):null;

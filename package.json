@@ -12,7 +12,7 @@
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
     "test": "npm run build && node --test tests/*.test.mjs",
     "test:prototype": "node --test tests/prototype-controls.test.mjs",
-    "evidence:prototype": "node scripts/run-prototype-evidence.mjs",
+    "evidence:prototype": "npm test && node scripts/run-prototype-evidence.mjs",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"

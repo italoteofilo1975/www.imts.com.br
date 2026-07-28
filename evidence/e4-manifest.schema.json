@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IMTS E4 Production Evidence Manifest",
+  "type": "object",
+  "required": ["version", "generatedAt", "gates"],
+  "properties": {
+    "version": {"type": "string"},
+    "generatedAt": {"type": "string", "format": "date-time"},
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status", "evidenceLevel", "evidence"],
+        "properties": {
+          "id": {"type": "string"},
+          "status": {"enum": ["NOT_RUN", "PASS", "FAIL", "BLOCKED"]},
+          "evidenceLevel": {"const": "E4"},
+          "evidence": {"type": "array", "items": {"type": "object"}},
+          "executedAt": {"type": ["string", "null"]},
+          "approvedBy": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}
