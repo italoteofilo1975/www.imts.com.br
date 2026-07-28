@@ -2,6 +2,7 @@ openapi: 3.1.0
 info:
   title: IMTS Site API
   version: 16.0.0
+  description: Contrato público e operacional do Site IMTS.
 servers:
   - url: https://imts-ecossistema.italo-teofilo.chatgpt.site
 paths:
@@ -13,7 +14,8 @@ paths:
         required: true
         content:
           application/json:
-            schema: {$ref: '#/components/schemas/LeadInput'}
+            schema:
+              $ref: '#/components/schemas/LeadInput'
       responses:
         '202': {description: Lead persistido, entregue ou pendente}
         '400': {description: JSON inválido}
@@ -48,6 +50,12 @@ paths:
     post:
       summary: Persiste telemetria consentida
       operationId: recordSiteEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteEventInput'
       responses:
         '202': {description: Evento aceito}
         '403': {description: Origem rejeitada}
@@ -57,10 +65,15 @@ paths:
     post:
       summary: Repete entregas pendentes
       operationId: retryPendingLeads
-      security: [{operationsBearer: []}]
+      security:
+        - operationsBearer: [leads:retry]
+      parameters:
+        - in: query
+          name: limit
+          schema: {type: integer, minimum: 1, maximum: 25, default: 25}
       responses:
         '200': {description: Lote processado}
-        '401': {description: Segredo ausente ou inválido}
+        '401': {description: JWT ausente, inválido, sem permissão ou reutilizado}
         '503': {description: Banco indisponível}
   /api/integrations/status:
     get:
@@ -73,17 +86,34 @@ components:
     operationsBearer:
       type: http
       scheme: bearer
-      description: Segredo operacional estático; substituição por identidade de workload é P0.
+      bearerFormat: JWT
+      description: JWT HS256 de workload no protótipo, com issuer, audience, expiração curta, RBAC e jti de uso único. JWKS/OIDC produtivo permanece gate E4.
   schemas:
     LeadInput:
       type: object
       required: [intent, name, email, message, consent]
       properties:
-        intent: {type: string, enum: [solution, partnership, initiative, talent, capital, relations]}
+        intent:
+          type: string
+          enum: [solution, partnership, initiative, talent, capital, relations]
         name: {type: string, minLength: 2, maxLength: 120}
         email: {type: string, format: email, maxLength: 254}
         organization: {type: string, maxLength: 180}
         role: {type: string, maxLength: 180}
         message: {type: string, minLength: 10, maxLength: 6000}
         consent: {type: boolean, const: true}
-        website: {type: string, description: Honeypot; deve permanecer vazio.}
+        website:
+          type: string
+          description: Honeypot; deve permanecer vazio.
+    SiteEventInput:
+      type: object
+      required: [event]
+      properties:
+        event:
+          type: string
+          enum: [page_view, cta_click, form_start, form_submit, assistant_open, assistant_query, consent_update]
+        path: {type: string, maxLength: 300}
+        properties:
+          type: object
+          maxProperties: 12
+          additionalProperties: {type: string, maxLength: 120}

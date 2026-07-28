@@ -6,6 +6,8 @@ import {
   anonymizeExpired,
   classifyFailure,
   correlationId,
+  runLoadSimulation,
+  runRestoreSimulation,
 } from "../app/prototype/operational-flow.mjs";
 
 test("claim concorrente entrega cada lead a somente um worker", async () => {
@@ -13,6 +15,18 @@ test("claim concorrente entrega cada lead a somente um worker", async () => {
   const claimed = await Promise.all(Array.from({ length: 10 }, (_, i) => queue.claim(`worker-${i}`, 1_000)));
   assert.equal(new Set(claimed.filter(Boolean).map((row) => row.id)).size, 10);
 });
+
+for(const [size,workers] of [[100,4],[500,16],[1000,32]]){
+  test(`carga E2 com ${size} leads não perde nem duplica`,async()=>{
+    const report=await runLoadSimulation(size,workers);
+    assert.equal(report.processed,size);assert.equal(report.duplicates,0);assert.equal(report.loss,0);
+    assert.equal(report.auditEvents,size*2);assert.ok(report.p99Ms>=0);
+  });
+  test(`restauração E2 preserva checksum de ${size} leads`,()=>{
+    const report=runRestoreSimulation(size);
+    assert.equal(report.integrity,true);assert.equal(report.orphans,0);assert.equal(report.rpoRecords,0);assert.ok(report.rtoMs>=0);
+  });
+}
 
 test("lease expirado é recuperado e lease incorreto não finaliza", async () => {
   const queue = new SharedPrototypeQueue([{ id: "lead-1", correlationId: correlationId() }]);

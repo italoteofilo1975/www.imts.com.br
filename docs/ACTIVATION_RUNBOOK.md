@@ -21,9 +21,11 @@ Accept only the allowlisted event catalog. Do not activate before measurement co
 The first-party gateway persists the allowlisted event before forwarding it. Event properties are restricted to 12 short string values and must remain non-identifying. Configure `IMTS_ANALYTICS_ENDPOINT` and `IMTS_ANALYTICS_SITE_ID` only when the external processor and consent basis are approved.
 
 ## Pending lead retry
-Set `IMTS_OPERATIONS_SECRET`, `IMTS_LEAD_WEBHOOK_URL` and `IMTS_LEAD_WEBHOOK_SECRET`. Invoke `POST /api/operations/retry-leads` with `Authorization: Bearer <IMTS_OPERATIONS_SECRET>` from an approved hourly scheduler. The worker selects at most 25 pending records, preserves the original idempotency key and stops after five attempts. Never call this route from a browser or expose its secret in client code.
+Set `IMTS_OPERATIONS_JWT_SECRET`, `IMTS_AUTH_ISSUER`, `IMTS_AUTH_AUDIENCE`, `IMTS_LEAD_WEBHOOK_URL` and `IMTS_LEAD_WEBHOOK_SECRET`. Invoke `POST /api/operations/retry-leads` with a signed JWT from an approved scheduler. Use the role `lead_retry_operator`, scope `leads:retry`, a unique `jti`, expiration of at most 15 minutes and the configured issuer/audience. Reuse of `jti` is denied.
 
-Operational evidence for each run is the returned aggregate (`processed`, `delivered`, `pending`) plus the corresponding `lead_events` records. Alert the technical owner when pending records remain after five attempts.
+The executor claims each due lead with an exclusive 30-second lease, finalizes only with the same lease token, preserves correlation and idempotency, honors `Retry-After`, applies capped backoff and moves permanent or exhausted failures to dead-letter. Never call this route from a browser or expose signing material in client code.
+
+Operational evidence for each run is the returned aggregate (`processed`, `delivered`, `pending`, `dead`) plus `lead_events` and the hash-linked audit records. Alert the technical owner whenever dead-letter records exist.
 
 ## Incident levels
 - P1: exposure risk, authentication bypass or integrity failure — disable connector immediately.
