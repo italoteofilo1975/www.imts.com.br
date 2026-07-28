@@ -43,6 +43,16 @@ A suíte `test:prototype` valida:
 
 `evidence:prototype` executa a suíte e gera `evidence/prototype-latest.json`, sempre classificado como `SIMULATED — NOT PRODUCTION EVIDENCE`.
 
+## Onda E2 integrada v20
+
+- JWT HS256 assinado no endpoint real do protótipo, com RBAC e `jti` consumido atomicamente.
+- Claim e lease transacionais conectados ao executor real, com recuperação de lease expirado.
+- Correlation-ID e chave de idempotência preservados no retry.
+- `Retry-After`, backoff, dead-letter e auditoria encadeada conectados ao runtime.
+- Cargas sintéticas de 100, 500 e 1.000 leads, sem perda ou duplicidade.
+- Restaurações sintéticas de 100, 500 e 1.000 registros, com checksum, RPO e RTO medidos.
+- Contenção de foco nos overlays e correção dos tokens de contraste críticos identificados.
+
 ## Política de decisão
 
 O protótipo pode ser declarado `pronto para homologação produtiva` quando todos os cenários E2 estiverem aprovados e os planos E3 estiverem definidos. Go-Live definitivo exige E4 para identidade, rate limiting, continuidade, observabilidade, domínio/TLS, conectores e LGPD.
