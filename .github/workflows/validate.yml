@@ -1,0 +1,30 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      live:
+        description: "Smoke de formulário contra produção (POST /api/leads)"
+        type: boolean
+        default: false
+
+jobs:
+  autopilotos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Validar produção (autopilotos J0–J6, somente leitura)
+        run: node tests/autopilotos/simular.mjs --base https://www.imts.com.br
+      - name: Smoke de formulário em produção (sob demanda)
+        if: ${{ inputs.live }}
+        run: node tests/autopilotos/simular.mjs --base https://www.imts.com.br --live-forms
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorios-autopilotos
+          path: tests/autopilotos/relatorios/

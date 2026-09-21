@@ -1,0 +1,80 @@
+{
+  "base_path_default": "http://localhost:3000",
+  "rotas": [
+    "/", "/capital", "/conectar", "/conhecimento", "/cookies", "/ecossistema",
+    "/explorar", "/faq", "/governanca", "/impacto", "/imts-os", "/insights",
+    "/integracoes", "/ive", "/partnerships", "/portal", "/privacidade",
+    "/segmentos", "/solucoes", "/talentos", "/termos"
+  ],
+  "agentes": [
+    {
+      "id": "visitante-publico",
+      "persona": "Primeira visita ao site, não conhece o IMTS. Navega orientado por menus e títulos.",
+      "jornadas": ["J1", "J5"]
+    },
+    {
+      "id": "gestor-b2g",
+      "persona": "Gestor público ou privado avaliando soluções e IMTS.OS para sua organização.",
+      "jornadas": ["J2", "J3", "J4"]
+    },
+    {
+      "id": "participante-workshop",
+      "persona": "Participante do Workshop IMTS IA-Nate que quer entender e acessar o IMTS.OS.",
+      "jornadas": ["J3", "J6"]
+    },
+    {
+      "id": "parceiro-instituicao",
+      "persona": "Instituição interessada em parcerias, capital, talentos ou ecossistema.",
+      "jornadas": ["J4"]
+    },
+    {
+      "id": "auditor-qualidade",
+      "persona": "Auditor transversal: executa varredura completa de todas as rotas e funções.",
+      "jornadas": ["J0"]
+    }
+  ],
+  "jornadas": [
+    {
+      "id": "J0",
+      "nome": "Varredura total (auditor)",
+      "rotas": "TODAS",
+      "funcoes": ["links-internos", "imagens", "formularios", "acessibilidade", "lgpd", "metadata"]
+    },
+    {
+      "id": "J1",
+      "nome": "Descoberta institucional",
+      "rotas": ["/", "/ecossistema", "/impacto", "/segmentos", "/conhecimento"],
+      "funcoes": ["nav-header", "cta-conhecer", "links-internos", "imagens"]
+    },
+    {
+      "id": "J2",
+      "nome": "Avaliação de soluções",
+      "rotas": ["/solucoes", "/solucoes/[slug]", "/conectar"],
+      "funcoes": ["lista-solucoes", "detalhe-slug", "cta-conectar", "formulario-conectar"]
+    },
+    {
+      "id": "J3",
+      "nome": "IMTS.OS e portal",
+      "rotas": ["/imts-os", "/portal", "/explorar"],
+      "funcoes": ["niveis-publico-autenticado", "cta-portal", "drill-down"]
+    },
+    {
+      "id": "J4",
+      "nome": "Participação e conexão",
+      "rotas": ["/conectar", "/faq", "/talentos", "/partnerships", "/capital"],
+      "funcoes": ["formulario-conectar", "faq-acordeao", "cta-talentos", "cta-partnerships"]
+    },
+    {
+      "id": "J5",
+      "nome": "Conformidade e confiança",
+      "rotas": ["/governanca", "/privacidade", "/termos", "/cookies"],
+      "funcoes": ["links-legais", "paginas-legais-render"]
+    },
+    {
+      "id": "J6",
+      "nome": "Conteúdo e ecossistema",
+      "rotas": ["/insights", "/ive", "/integracoes", "/ecossistema"],
+      "funcoes": ["links-internos", "imagens", "cta-conteudo"]
+    }
+  ]
+}

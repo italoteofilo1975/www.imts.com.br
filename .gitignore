@@ -40,3 +40,6 @@ next-env.d.ts
 /.sites-runtime/
 /outputs/
 /work/
+
+# Suíte de validação por autopilotos
+tests/autopilotos/relatorios/

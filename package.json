@@ -13,6 +13,9 @@
     "test": "npm run build && node --test tests/*.test.mjs",
     "test:prototype": "node --test tests/prototype-controls.test.mjs",
     "evidence:prototype": "npm test && node scripts/run-prototype-evidence.mjs",
+    "validate": "node tests/autopilotos/simular.mjs --base ${IMTS_BASE_URL:-http://localhost:3000}",
+    "validate:browser": "node tests/autopilotos/simular_browser.cjs --base ${IMTS_BASE_URL:-http://localhost:3000}",
+    "validate:live": "node tests/autopilotos/simular.mjs --base ${IMTS_BASE_URL:-https://www.imts.com.br} --live-forms",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
