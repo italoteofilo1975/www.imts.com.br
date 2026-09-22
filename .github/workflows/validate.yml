@@ -20,18 +20,18 @@ jobs:
           node-version: 24
       - name: Validar produção (autopilotos J0–J6, somente leitura)
         run: |
-          node tests/autopilotos/simular.mjs --base https://www.imts.com.br
-          code=$?
-          if [ $code -eq 3 ]; then
+          code=0
+          node tests/autopilotos/simular.mjs --base https://www.imts.com.br || code=$?
+          if [ "$code" -eq 3 ]; then
             echo "::warning::Pré-vio: o app IMTS (imts-ecossistema) ainda não está publicado em www.imts.com.br — validação completa diferida até o deploy. Nenhum falso positivo será registrado."
             exit 0
           fi
           exit $code
       - name: J8 Conexões externas (guardas de contrato, sem criar dados)
         run: |
+          code=0
           node tests/autopilotos/simular_externas.mjs --base https://www.imts.com.br || code=$?
-          code=${code:-0}
-          if [ $code -eq 3 ]; then
+          if [ "$code" -eq 3 ]; then
             echo "::warning::J8 diferido: app ainda não publicado em produção."
             exit 0
           fi
@@ -39,9 +39,9 @@ jobs:
       - name: Smoke de formulário em produção (sob demanda, exige deploy do app)
         if: ${{ inputs.live }}
         run: |
-          node tests/autopilotos/simular_externas.mjs --base https://www.imts.com.br --live
-          code=$?
-          if [ $code -eq 3 ]; then
+          code=0
+          node tests/autopilotos/simular_externas.mjs --base https://www.imts.com.br --live || code=$?
+          if [ "$code" -eq 3 ]; then
             echo "::error::Smoke live solicitado, mas o app não está publicado em produção."
             exit 1
           fi
