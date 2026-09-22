@@ -138,6 +138,18 @@ async function main() {
     console.error(`❌ Base inacessível (HTTP ${health.status}). Suba o app: npm run install:ci && npm run build && npm start`);
     process.exit(2);
   }
+  // pré-voo: garante que estamos falando com O APP IMTS (e não com outro site no domínio)
+  const conectar = await fetchPage("/conectar", 8000);
+  const gateway = await fetchPage("/api/integrations/status", 8000);
+  const ehAppImts = conectar.status === 200 && /briefing/i.test(conectar.html || "") &&
+    gateway.status === 200 && gateway.html.includes("imts-site-integration-gateway");
+  if (!ehAppImts) {
+    console.error(`⚠️  PRÉ-VIO FALHOU: ${BASE} não está servindo o app IMTS (imts-ecossistema).`);
+    console.error(`   /conectar → HTTP ${conectar.status} · gateway → HTTP ${gateway.status}`);
+    console.error(`   Deploy ainda não ocorreu ou o domínio aponta para outro site. Exit 3.`);
+    process.exit(3);
+  }
+  console.log("✓ pré-voo: app IMTS confirmado (/conectar 200 + gateway imts-site-integration-gateway)");
   // resolve slugs reais
   const s = await fetchPage("/solucoes");
   const slugs = s.html ? [...new Set([...s.html.matchAll(/href="(\/solucoes\/[a-z0-9-]+)"/gi)].map((m) => m[1]))] : [];

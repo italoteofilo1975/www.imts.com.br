@@ -95,6 +95,15 @@ async function drenarColeta(j, rota, coleta) {
 const novaColeta = () => ({ consoleErrors: [], pageErrors: [], http4xx5xx: [], fontesAmbiente: new Set() });
 
 (async () => {
+  // pré-voo: recusa validar o site errado
+  {
+    const probe = async (rota) => { try { const r = await fetch(BASE + rota, { signal: AbortSignal.timeout(8000) }); return { status: r.status, html: await r.text() }; } catch { return { status: 0, html: "" }; } };
+    const conectar = await probe("/conectar"), gateway = await probe("/api/integrations/status");
+    if (!(conectar.status === 200 && /briefing/i.test(conectar.html) && gateway.status === 200 && gateway.html.includes("imts-site-integration-gateway"))) {
+      console.error(`PRÉ-VIO FALHOU: ${BASE} não está servindo o app IMTS (/conectar ${conectar.status} · gateway ${gateway.status}). Exit 3.`);
+      process.exit(3);
+    }
+  }
   const browser = await chromium.launch({ channel: "chrome", headless: true });
   const desktop = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
