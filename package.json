@@ -18,7 +18,10 @@
     "validate:live": "node tests/autopilotos/simular.mjs --base ${IMTS_BASE_URL:-https://www.imts.com.br} --live-forms",
     "validate:artifact": "bash scripts/validate-artifact.sh",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate"
+    "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
+    "validate:externas": "node tests/autopilotos/simular_externas.mjs --base ${IMTS_MOCK_URL:-http://localhost:3200}",
+    "conector:mock": "node tests/autopilotos/conectores/mock-externo.mjs --porta ${IMTS_MOCK_PORT:-3200} --upstream ${IMTS_BASE_URL:-http://localhost:3000}",
+    "mcp:externo": "node tests/autopilotos/conectores/mcp-imts-externo.mjs"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
@@ -44,7 +47,10 @@
     "vite": "8.0.13",
     "wrangler": "4.92.0"
   },
-  "overrides": {"postcss":"8.5.18","sharp":"0.35.0"},
+  "overrides": {
+    "postcss": "8.5.18",
+    "sharp": "0.35.0"
+  },
   "type": "module",
-  "displayName": "IMTS | Ecossistema de Transforma\u00e7\u00e3o"
+  "displayName": "IMTS | Ecossistema de Transformação"
 }

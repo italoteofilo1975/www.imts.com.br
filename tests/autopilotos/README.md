@@ -16,6 +16,22 @@ A jornada **J7 (IMTS.OS nível autenticado)** é opcional: só executa quando a 
 ambiente `IMTS_AUTH_COOKIE` está definida (ex.: `IMTS_AUTH_COOKIE="sess=..."`). O nível 2
 ainda não está implantado nesta versão; a jornada verifica os marcadores quando houver credenciais.
 
+## J8 — Conexões externas e conectores
+
+As dependências externas do site (D1 persistência, Groq assistant, Resend transacional,
+analytics) são exercitadas por três peças em `conectores/`:
+
+| Peça | Papel |
+|---|---|
+| `conectores/mock-externo.mjs` (`npm run conector:mock`) | Proxy que emula `/api/*` com contrato fiel das rotas reais + registra evidências em `relatorios/evidencias-externas.jsonl`; repassa páginas/assets ao upstream |
+| `conectores/mcp-imts-externo.mjs` (`npm run mcp:externo`) | Servidor MCP (stdio, zero deps) com 5 ferramentas: `submeter_lead`, `consultar_imts_os`, `registrar_evento`, `status_integracoes`, `validar_conexoes_externas` |
+| `simular_externas.mjs` (`npm run validate:externas`) | Bateria J8: happy path, `x-correlation-id`, origin-rejected 403, validation 422, honeypot, assistant público, 501 autenticado, eventos/allowlist, gateway, guarda de operação — score 100/100 exigido |
+
+E2E completo: suba o app (`npm start`), o mock (`npm run conector:mock`) e rode
+`IMTS_BASE_URL=http://localhost:3200 npm run validate:browser` — o formulário real é
+submetido no browser e o lead é persistido/emalado pelo conector, com evidência em JSONL.
+Contra produção (D1/Groq reais): `npm run validate:live` e `node tests/autopilotos/simular_externas.mjs --base https://www.imts.com.br --live`.
+
 ## Como rodar
 
 ```bash
